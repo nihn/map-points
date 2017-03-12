@@ -1,6 +1,7 @@
 var fusionTable = (function() {
 
   var GoogleAuth;
+  var fusionLayer;
 
   gapi.load('client', initClient);
 
@@ -19,11 +20,12 @@ var fusionTable = (function() {
    layer in refreshed.
    */
   function refresh(map) {
-    return new google.maps.FusionTablesLayer({
+    fusionLayer && fusionLayer.setMap(null);
+    fusionLayer = new google.maps.FusionTablesLayer({
       query: {
         select: '\'Type\'',
         from: window.FUSION_TABLE_ID,
-        where: "location not equal to" + (-1 * Math.floor(Math.random() * 10000000)).toString()
+        where: "location not equal to" + (-1 * Math.random() * 10000000).toString()
       },
       map: map
     });
