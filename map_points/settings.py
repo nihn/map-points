@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
     'map_points',
+    'map_points.api',
 ]
 
 MIDDLEWARE_CLASSES = []
