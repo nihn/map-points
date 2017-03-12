@@ -2,7 +2,7 @@
 
 set -e
 
-if ! [ -e venv ]; then
+if [ ! -d "venv" ]; then
     ./setup.sh
 fi
 
