@@ -88,6 +88,10 @@ function reset() {
   });
 }
 
+window.onerror = function() {
+    NProgress.done();
+};
+
 var geocoder = new google.maps.Geocoder();
 var map = initMap();
 fusionTable.refresh(map);
