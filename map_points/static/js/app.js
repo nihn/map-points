@@ -33,6 +33,7 @@ function clickCallback(location) {
     'latLng': location
     }, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
+      // Only process records with "street_address" included.
       if (results[0] && results[0].types[0] == 'street_address') {
         hideError();
         console.log('Got response: ', results);
