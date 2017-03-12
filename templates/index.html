@@ -1,0 +1,32 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Map Points</title>
+    <style>
+       #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+    <script>
+        window.MAP_POINTS_API_URL = "{% url 'map-points-api' %}";
+        window.FUSION_TABLE_ID = '1OzxHLEdglBanM5IvjEBh9RhFmOwK2rV_rULJBnXk';
+    </script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlRx9pTkBeYEsRrAhQQQuM0o4ihJi1kEA"></script>
+  </head>
+  <body>
+    <h3 style="text-align:left;float:left;">Map points</h3>
+    <button style="text-align:center;float:right; height: 50px; width: 20%" onclick="reset()" type="button">Reset points</button>
+    <h3 id="error" style="color: red"></h3>
+    <div id="map"></div>
+    <table id="map-points">
+    </table>
+    <script src="{% static 'js/fusion.js' %}"></script>
+    <script src="{% static 'js/api.js' %}"></script>
+    <script src="{% static 'js/table.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+  </body>
+</html>
