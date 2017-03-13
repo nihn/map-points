@@ -49,7 +49,7 @@ function clickCallback(location) {
             api.insert(data);
             mapPointsTable.addRow(data.address, data.lng, data.lat)
           }
-          else if (status === 403) {
+          else if (res.status === 403) {
             showError("You do not have privilliges to edit connected Fusion Table");
           }
           else {
