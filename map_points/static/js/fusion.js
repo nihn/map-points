@@ -32,7 +32,7 @@ var fusionTable = (function() {
   }
 
   function doPostRequest(path) {
-    if (!GoogleAuth.isSignedIn.get()) {
+    if (GoogleAuth && !GoogleAuth.isSignedIn.get()) {
        GoogleAuth.signIn();
     }
 

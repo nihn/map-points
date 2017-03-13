@@ -1,7 +1,7 @@
 /**
  * Show error msg on top of the page
  */
-function showEror(msg) {
+function showError(msg) {
   console.log('ERROR: ' + msg);
   document.getElementById('error').innerHTML = msg;
 }
@@ -37,9 +37,8 @@ function clickCallback(location) {
       if (results[0] && results[0].types[0] == 'street_address') {
         hideError();
         console.log('Got response: ', results);
-        fusionTable.insert(results[0], location).then(function(res) {
-          if (res.status === 200) {
-            var data = {
+        fusionTable.insert(results[0], location).then(function() {
+           var data = {
               lng: location.lng(),
               lat: location.lat(),
               address: results[0].formatted_address
@@ -47,9 +46,10 @@ function clickCallback(location) {
 
             fusionTable.refresh(map);
             api.insert(data);
-            mapPointsTable.addRow(data.address, data.lng, data.lat)
-          }
-          else if (res.status === 403) {
+            mapPointsTable.addRow(data.address, data.lng, data.lat);
+            NProgress.done();
+        }, function(res) {
+          if (res.status === 403) {
             showError("You do not have privilliges to edit connected Fusion Table");
           }
           else {
@@ -60,7 +60,7 @@ function clickCallback(location) {
       }
       else {
         NProgress.done();
-        showEror('Failed to get exact address');
+        showError('Failed to get exact address');
       }
     }
     else {
