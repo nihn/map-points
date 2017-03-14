@@ -19,7 +19,7 @@ function hideError() {
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 15,
-      center: { lat: 47.37, lng: 8.54 }
+      center: window.MAP_CENTER
   });
   google.maps.event.addListener(map, 'click', function(event) {
     clickCallback(event.latLng);

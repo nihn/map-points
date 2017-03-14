@@ -77,3 +77,9 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     )
 }
+
+# Zurich
+MAP_CENTER = {
+    'lat': 47.37,
+    'lng': 8.54,
+}

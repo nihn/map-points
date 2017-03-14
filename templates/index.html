@@ -15,6 +15,7 @@
     <script>
         window.MAP_POINTS_API_URL = "{% url 'map-points-api' %}";
         window.FUSION_TABLE_ID = '1OzxHLEdglBanM5IvjEBh9RhFmOwK2rV_rULJBnXk';
+        window.MAP_CENTER = {{ map_center|safe }};
     </script>
     <script src='{% static 'vendor/js/nprogress.js' %}'></script>
     <script src="https://apis.google.com/js/api.js"></script>
