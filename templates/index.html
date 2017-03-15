@@ -14,7 +14,7 @@
 
     <script>
         window.MAP_POINTS_API_URL = "{% url 'map-points-api' %}";
-        window.FUSION_TABLE_ID = '1OzxHLEdglBanM5IvjEBh9RhFmOwK2rV_rULJBnXk';
+        window.FUSION_TABLE_ID =  "{{ fusion_table_id }}";
         window.MAP_CENTER = {{ map_center|safe }};
     </script>
     <script src='{% static 'vendor/js/nprogress.js' %}'></script>
@@ -28,7 +28,6 @@
     <div id="map"></div>
     <table id="map-points">
     </table>
-    <script src="{% static 'js/fusion.js' %}"></script>
     <script src="{% static 'js/api.js' %}"></script>
     <script src="{% static 'js/table.js' %}"></script>
     <script src="{% static 'js/app.js' %}"></script>

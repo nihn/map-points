@@ -21,12 +21,16 @@ ALLOWED_HOSTS = ['localhost']
 INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.sessions',
     'django.contrib.staticfiles',
     'map_points',
     'map_points.api',
+    'map_points.oauth2',
 ]
 
-MIDDLEWARE_CLASSES = []
+MIDDLEWARE_CLASSES = [
+    'django.contrib.sessions.middleware.SessionMiddleware',
+]
 
 
 ROOT_URLCONF = 'map_points.urls'
@@ -83,3 +87,5 @@ MAP_CENTER = {
     'lat': 47.37,
     'lng': 8.54,
 }
+
+FUSION_TABLE_ID = '1OzxHLEdglBanM5IvjEBh9RhFmOwK2rV_rULJBnXk'

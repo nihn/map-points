@@ -24,7 +24,22 @@ function initMap() {
   google.maps.event.addListener(map, 'click', function(event) {
     clickCallback(event.latLng);
   });
+  refreshFusionLayer();
   return map
+}
+
+
+/**
+Do insert and handle result
+ */
+function doInsert(data) {
+  api.insert(data, function () {
+    refreshFusionLayer();
+    mapPointsTable.addRow(data.address, data.lng, data.lat);
+    NProgress.done();
+  }, function () {
+    NProgress.done();
+  });
 }
 
 function clickCallback(location) {
@@ -37,22 +52,10 @@ function clickCallback(location) {
       if (results[0] && results[0].types[0] == 'street_address') {
         hideError();
         console.log('Got response: ', results);
-        fusionTable.insert(results[0], location).then(function(res) {
-          if (res.status === 200) {
-            var data = {
-              lng: location.lng(),
-              lat: location.lat(),
-              address: results[0].formatted_address
-            };
-
-            fusionTable.refresh(map);
-            api.insert(data);
-            mapPointsTable.addRow(data.address, data.lng, data.lat)
-          }
-          else {
-            console.log('Got ' + res.status + 'from Fusion Tables API');
-          }
-          NProgress.done();
+        doInsert({
+          lng: location.lng(),
+          lat: location.lat(),
+          address: results[0].formatted_address
         });
       }
       else {
@@ -73,18 +76,28 @@ function clickCallback(location) {
 function reset() {
   console.log('Resetting');
   NProgress.start();
-  api.flush();
-
-  fusionTable.flush().then(function (res) {
-    if (res.status === 200) {
-      console.log('Fusion table flushed');
-      fusionTable.refresh(map);
-      mapPointsTable.flush();
-    }
-    else {
-      console.log('Failed to flush Fusion table')
-    }
+  api.flush(function() {
+    refreshFusionLayer();
+    mapPointsTable.flush();
     NProgress.done();
+  }, function () {
+    NProgress.done();
+  });
+}
+
+/**
+ Create new FushionTableLayer with random where condition to be sure that
+ layer in refreshed.
+ */
+function refreshFusionLayer() {
+  fusionLayer && fusionLayer.setMap(null);
+  fusionLayer = new google.maps.FusionTablesLayer({
+    query: {
+      select: "'Address'",
+      from: window.FUSION_TABLE_ID,
+      where: "location not equal to " + (-1 * Math.random() * 10000000).toString()
+    },
+    map: map
   });
 }
 
@@ -92,6 +105,19 @@ window.onerror = function() {
     NProgress.done();
 };
 
+
+// Handle requests which was done with unauthenticated session
+var oldPost = localStorage.getItem('post');
+if (oldPost) {
+  localStorage.removeItem('post');
+  doInsert(JSON.parse(oldPost));
+}
+
+if (localStorage.getItem('delete')) {
+  reset();
+  localStorage.removeItem('delete');
+}
+
+var fusionLayer;
 var geocoder = new google.maps.Geocoder();
 var map = initMap();
-fusionTable.refresh(map);

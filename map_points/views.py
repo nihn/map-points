@@ -8,4 +8,5 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['map_center'] = settings.MAP_CENTER
+        context['fusion_table_id'] = settings.FUSION_TABLE_ID
         return context
