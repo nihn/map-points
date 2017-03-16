@@ -2,8 +2,10 @@ from datetime import date
 
 from django.conf import settings
 from django.utils.decorators import method_decorator
+from googleapiclient.errors import HttpError
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import ListCreateAPIView, DestroyAPIView
+from rest_framework.response import Response
 from rest_framework.status import HTTP_409_CONFLICT
 
 from map_points.api.serializers import MapPointSerializer
@@ -26,7 +28,11 @@ class MapPointsView(ListCreateAPIView, DestroyAPIView):
 
     @method_decorator(auth_required)
     def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
+        try:
+            return super().post(request, *args, **kwargs)
+        except HttpError as e:
+            # Handle Google API errors
+            return Response(status=e.resp.status, data=e._get_reason())
 
     def perform_create(self, serializer):
         """
@@ -51,10 +57,14 @@ class MapPointsView(ListCreateAPIView, DestroyAPIView):
 
     @method_decorator(auth_required)
     def delete(self, request, *args, **kwargs):
-        response = super().delete(request, *args, **kwargs)
-        request.gapi_client.query().sql(
-            sql=DELETE_TPL.format(table_id=settings.FUSION_TABLE_ID)).execute()
-        return response
+        try:
+            request.gapi_client.query().sql(sql=DELETE_TPL.format(
+                table_id=settings.FUSION_TABLE_ID)).execute()
+        except HttpError as e:
+            # Handle Google API errors
+            return Response(status=e.resp.status, data=e._get_reason())
+
+        return super().delete(request, *args, **kwargs)
 
     def get_object(self):
         return self.queryset

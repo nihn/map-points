@@ -24,4 +24,10 @@ def auth_required(f, request, *args, **kwargs):
     http_auth = credentials.authorize(httplib2.Http())
     client = discovery.build('fusiontables', 'v1', http=http_auth)
     request.gapi_client = client
-    return f(request, *args, **kwargs)
+    res = f(request, *args, **kwargs)
+
+    if res.status_code == 403:
+        # Logout unprivileged user
+        del request.session['credentials']
+
+    return res
