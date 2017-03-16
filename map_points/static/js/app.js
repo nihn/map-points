@@ -24,7 +24,6 @@ function initMap() {
   google.maps.event.addListener(map, 'click', function(event) {
     clickCallback(event.latLng);
   });
-  refreshFusionLayer();
   return map
 }
 
@@ -121,3 +120,4 @@ if (localStorage.getItem('delete')) {
 var fusionLayer;
 var geocoder = new google.maps.Geocoder();
 var map = initMap();
+refreshFusionLayer();
