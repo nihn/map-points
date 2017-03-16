@@ -9,6 +9,10 @@ from oauth2client.client import OAuth2Credentials
 
 @decorator
 def auth_required(f, request, *args, **kwargs):
+    """
+    Verify if request is authorized to communicate with Google's API. If so
+    assign authorized Fusion Tables client to it as gapi attribute.
+    """
     if 'credentials' not in request.session:
         return redirect(reverse('oauth2callback'))
 
