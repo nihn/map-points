@@ -49,7 +49,7 @@ var api = (function () {
     xhr.onload = function() {
       if (xhr.status === 401 && xhr.responseText) {
         // Store our delete to send it once we will be authorized to do so
-        localStorage.setItem('delete', successCallback);
+        localStorage.setItem('delete', '1');
         window.location.href = xhr.responseText;
       }
 

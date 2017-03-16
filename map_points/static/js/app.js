@@ -105,17 +105,23 @@ window.onerror = function() {
 };
 
 
-// Handle requests which was done with unauthenticated session
-var oldPost = localStorage.getItem('post');
-if (oldPost) {
-  localStorage.removeItem('post');
-  doInsert(JSON.parse(oldPost));
+/**
+ * Handle requests which were done with unauthenticated session
+ */
+function retryOldRequests() {
+  var oldPost = localStorage.getItem('post');
+  if (oldPost) {
+    localStorage.removeItem('post');
+    doInsert(JSON.parse(oldPost));
+  }
+
+  if (localStorage.getItem('delete')) {
+    reset();
+    localStorage.removeItem('delete');
+  }
 }
 
-if (localStorage.getItem('delete')) {
-  reset();
-  localStorage.removeItem('delete');
-}
+retryOldRequests();
 
 var fusionLayer;
 var geocoder = new google.maps.Geocoder();
