@@ -1,7 +1,7 @@
 /**
  * Show error msg on top of the page
  */
-function showEror(msg) {
+function showError(msg) {
   console.log('ERROR: ' + msg);
   document.getElementById('error').innerHTML = msg;
 }
@@ -59,7 +59,7 @@ function clickCallback(location) {
       }
       else {
         NProgress.done();
-        showEror('Failed to get exact address');
+        showError('Failed to get exact address');
       }
     }
     else {
