@@ -88,4 +88,9 @@ MAP_CENTER = {
     'lng': 8.54,
 }
 
+OAUTH2 = {
+    'secrets_file': os.path.join(BASE_DIR, 'client_secrets.json'),
+    'scope': ['https://www.googleapis.com/auth/fusiontables'],
+}
+
 FUSION_TABLE_ID = '1OzxHLEdglBanM5IvjEBh9RhFmOwK2rV_rULJBnXk'
